@@ -28,6 +28,7 @@ enum TYPE {
 	CIRCLE,
 	ELLIPSE,
 	BEZIER,
+	POLYGON,
 
 };
 

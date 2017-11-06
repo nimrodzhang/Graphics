@@ -75,6 +75,6 @@ void Line::scale() {
 
 }
 
-void Line::isSelect() {
-
+bool Line::isSelect() {
+	return false;
 }

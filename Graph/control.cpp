@@ -6,12 +6,15 @@ TYPE CurType = BLANK;
 struct pixel Begin, Current;
 struct pixel BezierPoints[4];
 int BezierCnt = 0;
+struct pixel PolygonPoints[30];
+int PolygonIndex = 0;
 
 void reinit() {
 	CurColor = BLACK;
 	CurState = FREE;
 	CurType = BLANK;
 	BezierCnt = 0;
+	PolygonIndex = 0;
 }
 
 void motionFunc(int x, int y) {
@@ -74,6 +77,39 @@ void mouseFunc(int button, int state, int x, int y) {
 				BezierCnt = (BezierCnt + 1) % 4;
 			}
 			break; }
+		case POLYGON: {
+			if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+				Begin = { x,y };
+			}
+			else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
+				if (PolygonIndex == 0) {
+					PolygonPoints[PolygonIndex] = Begin;
+					cout << PolygonIndex << endl;
+					PolygonPoints[++PolygonIndex] = Current;
+					cout << PolygonIndex << endl;
+					PolygonIndex++;
+					displayFunc();
+				}
+				else if (sqrt(pow(PolygonPoints[0].x - Begin.x, 2) + pow(PolygonPoints[0].y - Begin.y, 2)) < 20) {
+					PolygonPoints[PolygonIndex] = PolygonPoints[0];
+					cout << PolygonIndex << endl;
+					PolygonIndex++;
+					Polygon *shape = new Polygon(PolygonPoints, PolygonIndex, CurColor);
+					Graphs.addShape(shape);
+					cout << "addp\n";
+					displayFunc();
+					PolygonIndex = 0;
+				}
+				else {
+					PolygonPoints[PolygonIndex] = Begin;
+					cout << PolygonIndex << endl;
+					PolygonIndex++;
+					displayFunc();
+				}
+			}
+			break;
+		}
+					 
 		default:
 			break;
 		}
@@ -88,15 +124,18 @@ void mouseFunc(int button, int state, int x, int y) {
 			case LINE: {
 				Line *shape = new Line(Begin, Current, CurColor);
 				Graphs.addShape(shape);
-				break; }
+				break; 
+			}
 			case CIRCLE: {
 				Circle *shape = new Circle(Begin, Current, CurColor);
 				Graphs.addShape(shape);
-				break; }
+				break; 
+			}
 			case ELLIPSE: {
 				Ellipse *shape = new Ellipse(Begin, Current, CurColor);
 				Graphs.addShape(shape);
-				break; }
+				break; 
+			}
 			case BEZIER: {
 				BezierPoints[BezierCnt] = Begin;
 				//cout << BezierCnt << endl;
@@ -111,7 +150,35 @@ void mouseFunc(int button, int state, int x, int y) {
 				}
 				displayFunc();
 				BezierCnt = (BezierCnt + 1) % 4;
-				break; }
+				break; 
+			}
+			case POLYGON: {
+				if (PolygonIndex == 0) {
+					PolygonPoints[PolygonIndex] = Begin;
+					//cout << PolygonIndex << endl;
+					PolygonPoints[++PolygonIndex] = Current;
+					//cout << PolygonIndex << endl;
+					PolygonIndex++;
+					displayFunc();
+				}
+				else if (sqrt(pow(PolygonPoints[0].x - Begin.x, 2) + pow(PolygonPoints[0].y - Begin.y, 2)) < 20) {
+					PolygonPoints[PolygonIndex] = PolygonPoints[0];
+					//cout << PolygonIndex << endl;
+					PolygonIndex++;
+					Polygon *shape = new Polygon(PolygonPoints, PolygonIndex, CurColor);
+					Graphs.addShape(shape);
+					//cout << "addp\n";
+					displayFunc();
+					PolygonIndex = 0;
+				}
+				else {
+					PolygonPoints[PolygonIndex] = Begin;
+					//cout << PolygonIndex << endl;
+					PolygonIndex++;
+					displayFunc();
+				}
+				break; 
+			}
 
 			default:
 				break;

@@ -51,6 +51,6 @@ void Circle::scale() {
 
 }
 
-void Circle::isSelect() {
-
+bool Circle::isSelect() {
+	return false;
 }

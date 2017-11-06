@@ -59,6 +59,6 @@ void Ellipse::scale() {
 
 }
 
-void Ellipse::isSelect() {
-
+bool Ellipse::isSelect() {
+	return false;
 }

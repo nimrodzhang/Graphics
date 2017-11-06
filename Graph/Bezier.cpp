@@ -54,6 +54,6 @@ void Bezier::scale() {
 
 }
 
-void Bezier::isSelect() {
-
+bool Bezier::isSelect() {
+	return false;
 }

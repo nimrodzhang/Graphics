@@ -23,15 +23,18 @@ void displayFunc() {
 		case LINE: {
 			Line shape(Begin, Current, CurColor);
 			shape.draw();
-			break; }
+			break; 
+		}
 		case CIRCLE: {
 			Circle shape(Begin, Current, CurColor);
 			shape.draw();
-			break; }
+			break; 
+		}
 		case ELLIPSE: {
 			Ellipse shape(Begin, Current, CurColor);
 			shape.draw();
-			break; }
+			break; 
+		}
 		case BEZIER: {
 			if (BezierCnt == 2) {
 				Line shape1(BezierPoints[0], BezierPoints[2], RED);
@@ -46,15 +49,28 @@ void displayFunc() {
 				shape2.draw();
 				Line shape3(BezierPoints[3], BezierPoints[1], RED);
 				shape3.draw();
-				Bezier shape(BezierPoints[0], BezierPoints[1],
-					BezierPoints[2], BezierPoints[3], CurColor);
+				Bezier shape(BezierPoints[0], BezierPoints[1], BezierPoints[2], BezierPoints[3], CurColor);
 				shape.draw();
 			}
 			else {
 				Line shape1(Begin, Current, RED);
 				shape1.draw();
 			}
-			break; }
+			break; 
+		}
+		case POLYGON: {
+			if (PolygonIndex == 0) {
+				Line shape(Begin, Current, CurColor);
+				shape.draw();
+			}
+			else {
+				for (int i = 0; i < PolygonIndex - 1; i++) {
+					Line shape(PolygonPoints[i], PolygonPoints[i + 1], CurColor);
+					shape.draw();
+				}
+			}
+			break; 
+		}
 
 		default:
 			break;
@@ -84,6 +100,10 @@ void setValue(int value) {
 		CurState = DRAW;
 		CurType = BEZIER;
 		break;
+	case POLYGON:
+		CurState = DRAW;
+		CurType = POLYGON;
+		break;
 
 	case CUT:
 		CurState = CUT;
@@ -105,6 +125,7 @@ void createMenu() {
 	glutAddMenuEntry("圆", CIRCLE);
 	glutAddMenuEntry("椭圆", ELLIPSE);
 	glutAddMenuEntry("Bezier曲线", BEZIER);
+	glutAddMenuEntry("多边形", POLYGON);
 
 	int MainMenu = glutCreateMenu(setValue);
 	glutAddSubMenu("选择图形", ShapeMenu);

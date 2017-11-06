@@ -147,6 +147,7 @@
     <ClInclude Include="Ellipse.h" />
     <ClInclude Include="Graph.h" />
     <ClInclude Include="notes.h" />
+    <ClInclude Include="Polygon.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="Line.h" />
   </ItemGroup>
@@ -159,6 +160,7 @@
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Polygon.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

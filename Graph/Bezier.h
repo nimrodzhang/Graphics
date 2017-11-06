@@ -21,6 +21,6 @@ public:
 	void translate();
 	void rotate();
 	void scale();
-	void isSelect();
+	bool isSelect();
 
 };

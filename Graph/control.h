@@ -3,6 +3,7 @@
 #include "Circle.h"
 #include "Ellipse.h"
 #include "Bezier.h"
+#include "Polygon.h"
 #include "display.h"
 #include "Graph.h"
 
@@ -15,4 +16,6 @@ extern STATE CurState;
 extern TYPE CurType;
 extern struct pixel Begin, Current;
 extern struct pixel BezierPoints[4];
-extern int BezierCnt;
+extern int BezierCnt; 
+extern struct pixel PolygonPoints[30];
+extern int PolygonIndex;

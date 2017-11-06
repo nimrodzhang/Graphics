@@ -8,13 +8,16 @@ protected:
 	COLOR lineColor;	//图形线颜色
 	bool isCutted = false;	
 	pixel cut1 = { 0, 0 }, cut2 = { WINX,WINY };
+
 public:
 	virtual void draw(){}		//绘图
 	virtual void fill(){}		//填充
 	virtual void translate(){}	//平移
 	virtual void rotate(){}		//旋转
 	virtual void scale(){}		//缩放
-	virtual void isSelect(){}	//选中
+	virtual bool isSelect(){	//选中
+		return false;
+	}	
 	//向坐标集中添加新坐标
 	void addPixel(pixel p) {
 		points[index] = p;

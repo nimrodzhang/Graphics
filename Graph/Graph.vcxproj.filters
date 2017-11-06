@@ -45,6 +45,9 @@
     <ClInclude Include="Bezier.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Polygon.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Line.cpp">
@@ -69,6 +72,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Bezier.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Polygon.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
