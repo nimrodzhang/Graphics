@@ -1,11 +1,10 @@
 #pragma once
-#include "common.h"
 #include "Shape.h"
 
 class Ellipse : public Shape {
 private:
-	void midPointEllipse(pixel p, int a, int b);
-	void drawEllipseSymmetrically(pixel p, int x, int y);
+	void midPoint(pixel p, int a, int b);
+	void drawSymmetrically(pixel p, int x, int y);
 
 public:
 	Ellipse(pixel p1, pixel p2, COLOR color) {

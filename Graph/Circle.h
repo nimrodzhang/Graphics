@@ -1,5 +1,4 @@
 #pragma once
-#include "common.h"
 #include "Shape.h"
 
 class Circle : public Shape {

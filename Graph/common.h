@@ -27,6 +27,7 @@ enum TYPE {
 	LINE,
 	CIRCLE,
 	ELLIPSE,
+	BEZIER,
 
 };
 

@@ -2,6 +2,7 @@
 #include "Line.h"
 #include "Circle.h"
 #include "Ellipse.h"
+#include "Bezier.h"
 #include "display.h"
 #include "Graph.h"
 
@@ -13,4 +14,5 @@ extern COLOR CurColor;
 extern STATE CurState;
 extern TYPE CurType;
 extern struct pixel Begin, Current;
-//extern struct pixel CUT1, CUT2;
+extern struct pixel BezierPoints[4];
+extern int BezierCnt;

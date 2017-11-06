@@ -30,8 +30,30 @@ void displayFunc() {
 			break; }
 		case ELLIPSE: {
 			Ellipse shape(Begin, Current, CurColor);
-			//Circle shape(Begin, Current, CurColor);
 			shape.draw();
+			break; }
+		case BEZIER: {
+			if (BezierCnt == 2) {
+				Line shape1(BezierPoints[0], BezierPoints[2], RED);
+				shape1.draw();
+				Line shape2(BezierPoints[2], BezierPoints[1], RED);
+				shape2.draw();
+			}
+			else if (BezierCnt == 3) {
+				Line shape1(BezierPoints[0], BezierPoints[2], RED);
+				shape1.draw();
+				Line shape2(BezierPoints[2], BezierPoints[3], RED);
+				shape2.draw();
+				Line shape3(BezierPoints[3], BezierPoints[1], RED);
+				shape3.draw();
+				Bezier shape(BezierPoints[0], BezierPoints[1],
+					BezierPoints[2], BezierPoints[3], CurColor);
+				shape.draw();
+			}
+			else {
+				Line shape1(Begin, Current, RED);
+				shape1.draw();
+			}
 			break; }
 
 		default:
@@ -58,6 +80,10 @@ void setValue(int value) {
 		CurState = DRAW;
 		CurType = ELLIPSE;
 		break;
+	case BEZIER:
+		CurState = DRAW;
+		CurType = BEZIER;
+		break;
 
 	case CUT:
 		CurState = CUT;
@@ -78,6 +104,7 @@ void createMenu() {
 	glutAddMenuEntry("直线", LINE);
 	glutAddMenuEntry("圆", CIRCLE);
 	glutAddMenuEntry("椭圆", ELLIPSE);
+	glutAddMenuEntry("Bezier曲线", BEZIER);
 
 	int MainMenu = glutCreateMenu(setValue);
 	glutAddSubMenu("选择图形", ShapeMenu);
