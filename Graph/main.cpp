@@ -10,7 +10,7 @@ void main(int argc, char **argv) {
 	glutInitWindowSize(WINX, WINY);
 	glutInitWindowPosition(100, 100);
 	glutCreateWindow("Graph");
-	gluOrtho2D(0.0, WINX, WINY, 0.0);	
+	gluOrtho2D(0.0, WINX, 0.0, WINY);	
 	glClearColor(1.0, 1.0, 1.0, 0.0);		
 	glShadeModel(GL_FLAT);			
 

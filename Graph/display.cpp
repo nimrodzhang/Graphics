@@ -59,12 +59,12 @@ void displayFunc() {
 			break; 
 		}
 		case POLYGON: {
-			if (PolygonIndex == 0) {
+			if (PolygonPoints.size()==0) {
 				Line shape(Begin, Current, CurColor);
 				shape.draw();
 			}
 			else {
-				for (int i = 0; i < PolygonIndex - 1; i++) {
+				for (unsigned int i = 0; i < PolygonPoints.size() - 1; i++) {
 					Line shape(PolygonPoints[i], PolygonPoints[i + 1], CurColor);
 					shape.draw();
 				}
@@ -78,6 +78,18 @@ void displayFunc() {
 	}
 	else if (CurState == CUT) {
 		drawCutWindow();
+	}
+	else if (CurState == TRANSLATE) {
+		Graphs.graphTranslate(Begin);
+	}
+	else if (CurState == FILL) {
+		Graphs.graphFill(Begin);
+	}
+	else if (CurState==ROTATE) {
+		Graphs.graphRotate(Begin);
+	}
+	else if (CurState == SCALE) {
+		Graphs.graphScale(Begin);
 	}
 	glFlush();
 }
@@ -105,8 +117,33 @@ void setValue(int value) {
 		CurType = POLYGON;
 		break;
 
+	case BLACK:
+		CurColor = BLACK;
+		break;
+	case RED:
+		CurColor = RED;
+		break;
+	case GREEN:
+		CurColor = GREEN;
+		break;
+	case BLUE:
+		CurColor = BLUE;
+		break;
+
 	case CUT:
 		CurState = CUT;
+		break;
+	case TRANSLATE:
+		CurState = TRANSLATE;
+		break;
+	case FILL:
+		CurState = FILL;
+		break;
+	case ROTATE:
+		CurState = ROTATE;
+		break;
+	case SCALE:
+		CurState = SCALE;
 		break;
 	case NEW:
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -127,8 +164,22 @@ void createMenu() {
 	glutAddMenuEntry("Bezier曲线", BEZIER);
 	glutAddMenuEntry("多边形", POLYGON);
 
+	int ColorMenu = glutCreateMenu(setValue);
+	glutAddMenuEntry("黑色", BLACK);
+	glutAddMenuEntry("红色", RED);
+	glutAddMenuEntry("绿色", GREEN);
+	glutAddMenuEntry("蓝色", BLUE);
+
+	int EditMenu = glutCreateMenu(setValue);
+	glutAddMenuEntry("平移", TRANSLATE);
+	glutAddMenuEntry("旋转", ROTATE);
+	glutAddMenuEntry("缩放", SCALE);
+	glutAddMenuEntry("填充", FILL);
+
 	int MainMenu = glutCreateMenu(setValue);
 	glutAddSubMenu("选择图形", ShapeMenu);
+	glutAddSubMenu("选择颜色", ColorMenu);
+	glutAddSubMenu("图形编辑", EditMenu);
 	glutAddMenuEntry("裁剪", CUT);
 	glutAddMenuEntry("新建", NEW);
 

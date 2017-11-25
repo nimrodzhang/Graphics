@@ -1,6 +1,7 @@
 #include "Graph.h"
 
 Graph Graphs;
+Shape* CurShape = NULL;
 
 void Graph::addShape(Shape* shape) {
 	container.push_back(shape);
@@ -33,6 +34,77 @@ void Graph::graphCut(pixel c1, pixel c2) {
 	vector<Shape*>::iterator itr = container.begin();
 	for (; itr != container.end(); itr++) {
 		(*itr)->setCut(c1, c2);
+	}
+}
+
+void Graph::graphTranslate(pixel p) {
+	if (SelectState == 1) {
+		vector<Shape*>::iterator itr = container.begin();
+		for (; itr != container.end(); itr++) {
+			cout << "judging\n";
+			if ((*itr)->isSelect(p)) {
+				cout << "succeed\n";
+				CurShape = *itr;
+				return;
+			}
+		}
+	}
+	else if (SelectState == 2) {
+		if (CurShape != NULL) {
+			CurShape->translate();
+		}
+	}
+}
+
+void Graph::graphRotate(pixel p) {
+	if (SelectState == 1) {
+		vector<Shape*>::iterator itr = container.begin();
+		for (; itr != container.end(); itr++) {
+			cout << "judging\n";
+			if ((*itr)->isSelect(p)) {
+				cout << "succeed\n";
+				CurShape = *itr;
+				return;
+			}
+		}
+	}
+	else if (SelectState == 2) {
+		if (CurShape != NULL) {
+			CurShape->rotate();
+		}
+	}
+}
+
+void Graph::graphScale(pixel p) {
+	if (SelectState == 1) {
+		vector<Shape*>::iterator itr = container.begin();
+		for (; itr != container.end(); itr++) {
+			cout << "judging\n";
+			if ((*itr)->isSelect(p)) {
+				cout << "succeed\n";
+				CurShape = *itr;
+				return;
+			}
+		}
+	}
+	else if (SelectState == 2) {
+		if (CurShape != NULL) {
+			CurShape->scale();
+		}
+	}
+}
+
+void Graph::graphFill(pixel p) {
+	vector<Shape*>::iterator itr = container.begin();
+	for (; itr != container.end(); itr++) {
+		cout << "judging\n";
+		if ((*itr)->isSelect(p)) {
+			cout << "succeed\n";
+			(*itr)->setFill();
+			(*itr)->setColor(CurColor);
+			(*itr)->fill();
+			return;
+		}
 	}
 }
 

@@ -14,8 +14,17 @@ public:
 	void setColor(COLOR color);
 	//²Ã¼ô
 	void graphCut(pixel c1, pixel c2);
+	//Æ½ÒÆ
+	void graphTranslate(pixel p);
+	//Ðý×ª
+	void graphRotate(pixel p);
+	//Ëõ·Å
+	void graphScale(pixel p);
+	//Ìî³ä
+	void graphFill(pixel p);
 
 	void clear();
 };
 
 extern Graph Graphs;
+extern Shape* CurShape;

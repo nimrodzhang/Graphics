@@ -42,18 +42,23 @@ void Bezier::fill() {
 
 }
 
-void Bezier::translate() {
-
-}
-
 void Bezier::rotate() {
-
 }
 
-void Bezier::scale() {
+bool Bezier::isSelect(pixel p) {
+	if (cut1.x <= p.x && p.x <= cut2.x && cut1.y <= p.y && p.y <= cut2.y) {
+		int dx = abs(points[0].x - points[1].x);
+		int dy = abs(points[0].y - points[1].y);
+		int cnt = p.x - points[0].x;
+		int num = dx;
+		double t = 1.0 / (double)(num - 1);
 
-}
-
-bool Bezier::isSelect() {
+		pixel temp = bezierPoint(points[0], points[1], points[2], points[3], cnt*t);
+		double r = sqrt(pow(p.x - temp.x, 2) + pow(p.y - temp.y, 2));
+		cout << cnt << " " << temp.x - points[0].x << endl;
+		cout << p.x << " " << p.y << " || " << temp.x << " " << temp.y << " || " << r << endl;
+		if (r < 10.0)
+			return true;
+	}
 	return false;
 }

@@ -1,5 +1,4 @@
 #pragma once
-#include <list>
 #include <vector>
 #include <iostream>
 #include <algorithm>
@@ -36,5 +35,19 @@ enum STATE {
 	FREE = 61,
 	DRAW,
 	CUT,
+	TRANSLATE,
+	ROTATE,
+	SCALE,
+	FILL,
 	NEW,
 };
+
+
+extern COLOR CurColor;
+extern STATE CurState;
+extern TYPE CurType;
+extern int SelectState;
+extern struct pixel Begin, Current;
+extern struct pixel BezierPoints[4];
+extern int BezierCnt;
+extern vector<pixel> PolygonPoints;

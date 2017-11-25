@@ -7,8 +7,8 @@ private:
 	void connectLines(pixel points[], int size, COLOR color);
 
 public:
-	Polygon(pixel pps[], int size, COLOR color) {
-		for (int i = 0; i < size; i++) {
+	Polygon(vector<pixel> pps, COLOR color) {
+		for (unsigned int i = 0; i < pps.size(); i++) {
 			this->addPixel(pps[i]);
 		}
 		this->lineColor = color;
@@ -16,9 +16,13 @@ public:
 
 	void draw();
 	void fill();
-	void translate();
 	void rotate();
-	void scale();
-	bool isSelect();
+	bool isSelect(pixel p);
 
+};
+
+struct Node {
+	int Ymax;
+	double X;
+	double m;
 };

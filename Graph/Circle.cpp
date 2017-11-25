@@ -33,24 +33,34 @@ void Circle::draw() {
 	setColor(lineColor);
 	int r = (int)sqrt(pow(points[0].x - points[1].x, 2) + pow(points[0].y - points[1].y, 2));
 	midPoint(points[0], r);
+	if(isFill)
+		fill();
 }
 
 void Circle::fill() {
-
-}
-
-void Circle::translate() {
-
+	pixel p0 = points[0];
+	int r = (int)sqrt(pow(points[0].x - points[1].x, 2) + pow(points[0].y - points[1].y, 2));
+	glBegin(GL_POINTS);
+	for (int i = p0.x - r; i <= p0.x + r; i++) {
+		for (int j = p0.y - r; j <= p0.y + r; j++) {
+			int dis = (int)sqrt(pow(p0.x - i, 2) + pow(p0.y - j, 2));
+			if (dis < r)
+				myglVertex2i(i, j);
+		}
+	}
+	glEnd();
 }
 
 void Circle::rotate() {
 
 }
 
-void Circle::scale() {
-
-}
-
-bool Circle::isSelect() {
+bool Circle::isSelect(pixel p) {
+	if (cut1.x <= p.x && p.x <= cut2.x && cut1.y <= p.y && p.y <= cut2.y) {
+		double dis = sqrt(pow(p.x - points[0].x, 2) + pow(p.y - points[0].y, 2));
+		double r = sqrt(pow(points[0].x - points[1].x, 2) + pow(points[0].y - points[1].y, 2));
+		if (fabs(dis - r) < 10.0)
+			return true;
+	}
 	return false;
 }

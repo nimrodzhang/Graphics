@@ -41,24 +41,55 @@ void Ellipse::drawSymmetrically(pixel p, int x, int y) {
 void Ellipse::draw() {
 	setColor(lineColor);
 	midPoint(points[0], abs(points[1].x - points[0].x), abs(points[1].y - points[0].y));
+	if (isFill)
+		fill();
 }
 
 void Ellipse::fill() {
-
-}
-
-void Ellipse::translate() {
-
+	double a = abs(points[0].x - points[1].x);
+	double b = abs(points[0].y - points[1].y);
+	glBegin(GL_POINTS);
+	for (int i = points[0].x - a; i <= points[0].x + a; i++) {
+		for (int j = points[0].y - b; j <= points[0].y + b; j++) {
+			if (i == points[0].x) {
+				myglVertex2i(i, j);
+			}
+			else {
+				double k = double(j - points[0].y) / (double)(i - points[0].x);
+				double xs = (a*a*b*b) / (b*b + a*a*k*k);
+				double ys = k*k*xs;
+				double r = sqrt(xs + ys);
+				double dis = sqrt(pow(i - points[0].x, 2) + pow(j - points[0].y, 2));
+				if (dis < r)
+					myglVertex2i(i, j);
+			}
+		}
+	}
+	glEnd();
 }
 
 void Ellipse::rotate() {
 
 }
 
-void Ellipse::scale() {
-
-}
-
-bool Ellipse::isSelect() {
+bool Ellipse::isSelect(pixel p) {
+	if (cut1.x <= p.x && p.x <= cut2.x && cut1.y <= p.y && p.y <= cut2.y) {
+		double a = abs(points[0].x - points[1].x);
+		double b = abs(points[0].y - points[1].y);
+		if (p.x == points[0].x) {
+			if ((p.y > points[0].y + b - 10 && p.y < points[0].y + b + 10) 
+				|| (p.y > points[0].y - b - 10 && p.y < points[0].y - b + 10))
+				return true;
+		}
+		else {
+			double k = double(p.y - points[0].y) / (double)(p.x - points[0].x);
+			double xs = (a*a*b*b) / (b*b + a*a*k*k);
+			double ys = k*k*xs;
+			double r = sqrt(xs + ys);
+			double dis = sqrt(pow(p.x - points[0].x, 2) + pow(p.y - points[0].y, 2));
+			if (fabs(dis - r) < 10.0)
+				return true;
+		}
+	}
 	return false;
 }

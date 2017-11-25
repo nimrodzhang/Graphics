@@ -3,23 +3,25 @@
 COLOR CurColor = BLACK;
 STATE CurState = FREE;
 TYPE CurType = BLANK;
+int SelectState = 0;
 struct pixel Begin, Current;
 struct pixel BezierPoints[4];
 int BezierCnt = 0;
-struct pixel PolygonPoints[30];
-int PolygonIndex = 0;
+vector<pixel> PolygonPoints;
+
 
 void reinit() {
 	CurColor = BLACK;
 	CurState = FREE;
 	CurType = BLANK;
 	BezierCnt = 0;
-	PolygonIndex = 0;
+	SelectState = 0;
+	PolygonPoints.clear();
 }
 
 void motionFunc(int x, int y) {
-	Current = { x,y };
-
+	Current = { x,WINY-y };
+	SelectState = 2;
 	displayFunc();
 }
 
@@ -117,7 +119,8 @@ void mouseFunc(int button, int state, int x, int y) {
 
 		
 		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-			Begin = { x,y };
+			Begin = { x,WINY-y };
+			//cout << x << " " << y;
 		}
 		else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
 			switch (CurType) {
@@ -153,28 +156,25 @@ void mouseFunc(int button, int state, int x, int y) {
 				break; 
 			}
 			case POLYGON: {
-				if (PolygonIndex == 0) {
-					PolygonPoints[PolygonIndex] = Begin;
+				if (PolygonPoints.size() == 0) {
+					PolygonPoints.push_back(Begin);
 					//cout << PolygonIndex << endl;
-					PolygonPoints[++PolygonIndex] = Current;
+					PolygonPoints.push_back(Current);
 					//cout << PolygonIndex << endl;
-					PolygonIndex++;
 					displayFunc();
 				}
 				else if (sqrt(pow(PolygonPoints[0].x - Begin.x, 2) + pow(PolygonPoints[0].y - Begin.y, 2)) < 20) {
-					PolygonPoints[PolygonIndex] = PolygonPoints[0];
+					PolygonPoints.push_back(PolygonPoints[0]);
 					//cout << PolygonIndex << endl;
-					PolygonIndex++;
-					Polygon *shape = new Polygon(PolygonPoints, PolygonIndex, CurColor);
+					Polygon *shape = new Polygon(PolygonPoints, CurColor);
 					Graphs.addShape(shape);
 					//cout << "addp\n";
 					displayFunc();
-					PolygonIndex = 0;
+					PolygonPoints.clear();
 				}
 				else {
-					PolygonPoints[PolygonIndex] = Begin;
+					PolygonPoints.push_back(Begin);
 					//cout << PolygonIndex << endl;
-					PolygonIndex++;
 					displayFunc();
 				}
 				break; 
@@ -189,11 +189,55 @@ void mouseFunc(int button, int state, int x, int y) {
 	}
 	else if (CurState == CUT) {
 		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-			Begin = { x,y };
+			Begin = { x,WINY-y };
 		}
 		else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
 			Graphs.graphCut(Begin, Current);
 			displayFunc();
+		}
+	}
+	else if (CurState == TRANSLATE) {
+		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+			Begin = { x,WINY-y };
+			SelectState = 1;
+			displayFunc();
+		}
+		else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
+			Current = { x,WINY-y };
+			SelectState = 0;
+			CurShape = NULL;
+		}
+	}
+	else if (CurState == FILL) {
+		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+			Begin = { x,WINY-y };
+			displayFunc();
+		}
+	}
+	else if (CurState == ROTATE) {
+		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+			Begin = { x,WINY - y };
+			SelectState = 1;
+			displayFunc();
+		}
+		else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
+			Current = { x,WINY - y };
+			SelectState = 0;
+			displayFunc();
+			CurShape = NULL;
+		}
+	}
+	else if (CurState == SCALE) {
+		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+			Begin = { x,WINY - y };
+			SelectState = 1;
+			displayFunc();
+		}
+		else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
+			Current = { x,WINY - y };
+			SelectState = 0;
+			displayFunc();
+			CurShape = NULL;
 		}
 	}
 }

@@ -15,8 +15,6 @@ public:
 
 	void draw();
 	void fill();
-	void translate();
 	void rotate();
-	void scale();
-	bool isSelect();
+	bool isSelect(pixel p);
 };
