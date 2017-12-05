@@ -1,8 +1,8 @@
 #include "Polygon.h"
 #include <list>
 
-void Polygon::connectLines(pixel points[], int size, COLOR color) {
-	for (int i = 0; i < size - 1; i++) {
+void Polygon::connectLines(vector<pixel> points, Color color) {
+	for (int i = 0; i < points.size() - 1; i++) {
 		Line line(points[i], points[i + 1], color);
 		line.setCut(cut1, cut2);
 		line.draw();
@@ -10,7 +10,7 @@ void Polygon::connectLines(pixel points[], int size, COLOR color) {
 }
 
 void Polygon::draw() {
-	connectLines(points, index, lineColor);
+	connectLines(points, lineColor);
 	if(isFill)
 		fill();
 }
@@ -23,7 +23,7 @@ bool compareX(const Node& a, const Node& b) {
 void Polygon::fill() {
 	list<Node> OrderedEgdeTable[700];
 
-	for (int i = 0; i < index-1; i++) {
+	for (int i = 0; i < points.size()-1; i++) {
 		pixel up, down;
 		if (points[i].y < points[i + 1].y) {
 			up = points[i + 1];
@@ -82,55 +82,35 @@ void Polygon::fill() {
 }
 
 void Polygon::rotate() {
-	//旋转点的选取：距离屏幕左下角最近的点为基准点，虽然精度不高，但比较稳定，便于判断
-	pixel up, down;
-	/*if (tanA > tanB) {
-	up = Begin;
-	down = Current;
+	double maxdis = 0;
+	pixel pmax = { 0,0 };
+
+	for (int i = 0; i < rotatelist.size(); i++) {
+		double tempdis = calDistance(Begin, rotatelist[i]);
+		if (tempdis > maxdis) {
+			maxdis = tempdis;
+			pmax = rotatelist[i];
+		}
 	}
-	else {
-	up = Current;
-	down = Begin;
-	}*/
-	down = Begin;
-	up = Current;
-	/*
-	double lup = sqrt(up.x*up.x + (WINY - up.y)*(WINY - up.y));
-	double sinup = (double)(WINY - up.y) / lup;
-	double cosup = (double)up.x / lup;
-	double ldown = sqrt(down.x*down.x + (WINY - down.y)*(WINY - down.y));
-	double sindown = (double)(WINY - down.y) / ldown;
-	double cosdown = (double)down.x / ldown;
 
-	double sin = sinup*cosdown - cosup*sindown;
-	double cos = cosup*cosdown + sinup*sindown;
-	cout << sin << "  " << cos << endl;
+	double lBegin = calDistance(Begin, pmax);
+	double sinBegin = (double)(Begin.y - pmax.y) / lBegin;
+	double cosBegin = (double)(Begin.x - pmax.x) / lBegin;
+	double lCurrent = calDistance(Current, pmax);
+	double sinCurrent = (double)(Current.y - pmax.y) / lCurrent;
+	double cosCurrent = (double)(Current.x - pmax.x) / lCurrent;
 
-	for (int i = 0; i < index; i++) {
-	points[i].x = points[i].x*cos - (points[i].y - WINY)*sin;
-	points[i].y = WINY + points[i].x*sin + (points[i].y - WINY)*cos;
+	double sin = sinCurrent*cosBegin - cosCurrent*sinBegin;
+	double cos = cosCurrent*cosBegin + sinCurrent*sinBegin;
+
+	for (int i = 0; i < points.size(); i++) {
+		points[i].x = pmax.x + (rotatelist[i].x - pmax.x)*cos - (rotatelist[i].y - pmax.y)*sin;
+		points[i].y = pmax.y + (rotatelist[i].x - pmax.x)*sin + (rotatelist[i].y - pmax.y)*cos;
 	}
-	*/
-	double lup = sqrt(up.x*up.x + (up.y)*(up.y));
-	double sinup = (double)(up.y) / lup;
-	double cosup = (double)up.x / lup;
-	double ldown = sqrt(down.x*down.x + (down.y)*(down.y));
-	double sindown = (double)(down.y) / ldown;
-	double cosdown = (double)down.x / ldown;
-
-	double sin = sinup*cosdown - cosup*sindown;
-	double cos = cosup*cosdown + sinup*sindown;
-	cout << sin << "  " << cos << endl;
-
-	for (int i = 0; i < index; i++) {
-		points[i].x = points[i].x*cos - (points[i].y)*sin;
-		points[i].y = points[i].x*sin + (points[i].y)*cos;
-	}
-	Begin = Current;
 }
 
 bool Polygon::isSelect(pixel p) {
-	for (int i = 0; i < index; i++) {
+	for (int i = 0; i < points.size()-1; i++) {
 		Line line(points[i], points[i + 1], lineColor);
 		line.setCut(cut1, cut2);
 		if (line.isSelect(p))

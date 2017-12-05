@@ -3,13 +3,13 @@
 void drawCutWindow() {
 	pixel v1 = { Begin.x, Current.y },
 		v2 = { Current.x, Begin.y };
-	Line shape1(Begin, v1, RED);
+	Line shape1(Begin, v1, Color(1.0,0,0));
 	shape1.draw();
-	Line shape2(Begin, v2, RED);
+	Line shape2(Begin, v2, Color(1.0,0,0));
 	shape2.draw();
-	Line shape3(Current, v1, RED);
+	Line shape3(Current, v1, Color(1.0,0,0));
 	shape3.draw();
-	Line shape4(Current, v2, RED);
+	Line shape4(Current, v2, Color(1.0,0,0));
 	shape4.draw();
 }
 
@@ -37,23 +37,23 @@ void displayFunc() {
 		}
 		case BEZIER: {
 			if (BezierCnt == 2) {
-				Line shape1(BezierPoints[0], BezierPoints[2], RED);
+				Line shape1(BezierPoints[0], BezierPoints[2], Color(1.0,0,0));
 				shape1.draw();
-				Line shape2(BezierPoints[2], BezierPoints[1], RED);
+				Line shape2(BezierPoints[2], BezierPoints[1], Color(1.0,0,0));
 				shape2.draw();
 			}
 			else if (BezierCnt == 3) {
-				Line shape1(BezierPoints[0], BezierPoints[2], RED);
+				Line shape1(BezierPoints[0], BezierPoints[2], Color(1.0,0,0));
 				shape1.draw();
-				Line shape2(BezierPoints[2], BezierPoints[3], RED);
+				Line shape2(BezierPoints[2], BezierPoints[3], Color(1.0,0,0));
 				shape2.draw();
-				Line shape3(BezierPoints[3], BezierPoints[1], RED);
+				Line shape3(BezierPoints[3], BezierPoints[1], Color(1.0,0,0));
 				shape3.draw();
 				Bezier shape(BezierPoints[0], BezierPoints[1], BezierPoints[2], BezierPoints[3], CurColor);
 				shape.draw();
 			}
 			else {
-				Line shape1(Begin, Current, RED);
+				Line shape1(Begin, Current, Color(1.0,0,0));
 				shape1.draw();
 			}
 			break; 
@@ -80,16 +80,32 @@ void displayFunc() {
 		drawCutWindow();
 	}
 	else if (CurState == TRANSLATE) {
-		Graphs.graphTranslate(Begin);
+		if (CurShape != NULL) {
+			CurShape->translate();
+		}
 	}
 	else if (CurState == FILL) {
-		Graphs.graphFill(Begin);
+		if (CurShape != NULL) {
+			CurShape->fill();
+		}
 	}
 	else if (CurState==ROTATE) {
-		Graphs.graphRotate(Begin);
+		if (CurShape != NULL) {
+			CurShape->rotate();
+		}
 	}
 	else if (CurState == SCALE) {
-		Graphs.graphScale(Begin);
+		if (CurShape != NULL) {
+			CurShape->scale();
+		}
+	}
+	else if (CurState == EDIT) {
+		if (CurShape != NULL) {
+			//CurShape->展示显示框;
+		}
+	}
+	else if (CurState == SETCOLOR) {
+		showColor();
 	}
 	glFlush();
 }
@@ -116,7 +132,7 @@ void setValue(int value) {
 		CurState = DRAW;
 		CurType = POLYGON;
 		break;
-
+/*
 	case BLACK:
 		CurColor = BLACK;
 		break;
@@ -128,6 +144,15 @@ void setValue(int value) {
 		break;
 	case BLUE:
 		CurColor = BLUE;
+		break;
+		*/
+	case SETCOLOR:
+		CurState = SETCOLOR;
+		//displayFunc();
+		break;
+
+	case EDIT:
+		CurState = EDIT;
 		break;
 
 	case CUT:
@@ -154,6 +179,7 @@ void setValue(int value) {
 		break;
 	default:break;
 	}
+	displayFunc();
 }
 
 void createMenu() {
@@ -164,12 +190,13 @@ void createMenu() {
 	glutAddMenuEntry("Bezier曲线", BEZIER);
 	glutAddMenuEntry("多边形", POLYGON);
 
+	/*
 	int ColorMenu = glutCreateMenu(setValue);
 	glutAddMenuEntry("黑色", BLACK);
 	glutAddMenuEntry("红色", RED);
 	glutAddMenuEntry("绿色", GREEN);
 	glutAddMenuEntry("蓝色", BLUE);
-
+	*/
 	int EditMenu = glutCreateMenu(setValue);
 	glutAddMenuEntry("平移", TRANSLATE);
 	glutAddMenuEntry("旋转", ROTATE);
@@ -178,8 +205,10 @@ void createMenu() {
 
 	int MainMenu = glutCreateMenu(setValue);
 	glutAddSubMenu("选择图形", ShapeMenu);
-	glutAddSubMenu("选择颜色", ColorMenu);
+	//glutAddSubMenu("选择颜色", ColorMenu);
+	glutAddMenuEntry("选择颜色", SETCOLOR);
 	glutAddSubMenu("图形编辑", EditMenu);
+	glutAddMenuEntry("编辑", EDIT);
 	glutAddMenuEntry("裁剪", CUT);
 	glutAddMenuEntry("新建", NEW);
 

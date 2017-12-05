@@ -1,9 +1,9 @@
 #include "control.h"
 
-COLOR CurColor = BLACK;
+Color CurColor;
 STATE CurState = FREE;
 TYPE CurType = BLANK;
-int SelectState = 0;
+//int SelectState = 0;
 struct pixel Begin, Current;
 struct pixel BezierPoints[4];
 int BezierCnt = 0;
@@ -11,17 +11,15 @@ vector<pixel> PolygonPoints;
 
 
 void reinit() {
-	CurColor = BLACK;
+	CurColor = Color();
 	CurState = FREE;
 	CurType = BLANK;
 	BezierCnt = 0;
-	SelectState = 0;
 	PolygonPoints.clear();
 }
 
 void motionFunc(int x, int y) {
 	Current = { x,WINY-y };
-	SelectState = 2;
 	displayFunc();
 }
 
@@ -199,46 +197,51 @@ void mouseFunc(int button, int state, int x, int y) {
 	else if (CurState == TRANSLATE) {
 		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
 			Begin = { x,WINY-y };
-			SelectState = 1;
-			displayFunc();
+			Graphs.graphSelect(Begin);
 		}
 		else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
 			Current = { x,WINY-y };
-			SelectState = 0;
 			CurShape = NULL;
 		}
 	}
 	else if (CurState == FILL) {
 		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
 			Begin = { x,WINY-y };
+			Graphs.graphSelect(Begin);
 			displayFunc();
 		}
 	}
 	else if (CurState == ROTATE) {
 		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
 			Begin = { x,WINY - y };
-			SelectState = 1;
-			displayFunc();
+			Graphs.graphSelect(Begin);
 		}
 		else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
-			Current = { x,WINY - y };
-			SelectState = 0;
-			displayFunc();
+			//Current = { x,WINY - y };
 			CurShape = NULL;
 		}
 	}
 	else if (CurState == SCALE) {
 		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
 			Begin = { x,WINY - y };
-			SelectState = 1;
-			displayFunc();
+			Graphs.graphSelect(Begin);
 		}
 		else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
-			Current = { x,WINY - y };
-			SelectState = 0;
-			displayFunc();
+			//Current = { x,WINY - y };
 			CurShape = NULL;
 		}
+	}
+	else if (CurState == EDIT) {
+		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+			Begin = { x,WINY - y };
+			if (CurShape == NULL) {
+				Graphs.graphSelect(Begin);
+				
+			}
+		}
+	}
+	else if (CurState == SETCOLOR) {
+
 	}
 }
 

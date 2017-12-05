@@ -31,24 +31,46 @@ void Circle::drawSymmetrically(pixel p, int x, int y) {
 
 void Circle::draw() {
 	setColor(lineColor);
-	int r = (int)sqrt(pow(points[0].x - points[1].x, 2) + pow(points[0].y - points[1].y, 2));
+	int r = (int)calDistance(points[0], points[1]);
 	midPoint(points[0], r);
 	if(isFill)
 		fill();
 }
 
-void Circle::fill() {
-	pixel p0 = points[0];
-	int r = (int)sqrt(pow(points[0].x - points[1].x, 2) + pow(points[0].y - points[1].y, 2));
+void Circle::fillSymmetrically(pixel p, int x, int y) {
 	glBegin(GL_POINTS);
-	for (int i = p0.x - r; i <= p0.x + r; i++) {
-		for (int j = p0.y - r; j <= p0.y + r; j++) {
-			int dis = (int)sqrt(pow(p0.x - i, 2) + pow(p0.y - j, 2));
-			if (dis < r)
-				myglVertex2i(i, j);
-		}
+	for (int i = 0; i < y; i++) {
+		myglVertex2i(p.x + x, p.y + i);
+		myglVertex2i(p.x + x, p.y - i);
+		myglVertex2i(p.x - x, p.y + i);
+		myglVertex2i(p.x - x, p.y - i);
+	}
+	for (int j = 0; j < x; j++) {
+		myglVertex2i(p.x + y, p.y + j);
+		myglVertex2i(p.x + y, p.y - j);
+		myglVertex2i(p.x - y, p.y + j);
+		myglVertex2i(p.x - y, p.y - j);
 	}
 	glEnd();
+}
+
+void Circle::fill() {
+	pixel p = points[0];
+	int r = (int)calDistance(points[0], points[1]);
+	
+	int x = 0, y = r;
+	int d = (int)(5 / 4 - r);
+	while (x <= y) {
+		fillSymmetrically(p, x, y);
+		if (d < 0) {
+			d += (2 * x + 3);
+		}
+		else {
+			d += (2 * (x - y) + 5);
+			y--;
+		}
+		x++;
+	}
 }
 
 void Circle::rotate() {
@@ -57,8 +79,8 @@ void Circle::rotate() {
 
 bool Circle::isSelect(pixel p) {
 	if (cut1.x <= p.x && p.x <= cut2.x && cut1.y <= p.y && p.y <= cut2.y) {
-		double dis = sqrt(pow(p.x - points[0].x, 2) + pow(p.y - points[0].y, 2));
-		double r = sqrt(pow(points[0].x - points[1].x, 2) + pow(points[0].y - points[1].y, 2));
+		double dis = calDistance(p, points[0]);
+		double r = calDistance(points[0], points[1]);
 		if (fabs(dis - r) < 10.0)
 			return true;
 	}

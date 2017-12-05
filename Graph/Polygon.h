@@ -4,10 +4,10 @@
 
 class Polygon : public Shape {
 private:
-	void connectLines(pixel points[], int size, COLOR color);
+	void connectLines(vector<pixel> points, Color color);
 
 public:
-	Polygon(vector<pixel> pps, COLOR color) {
+	Polygon(vector<pixel> pps, Color color) {
 		for (unsigned int i = 0; i < pps.size(); i++) {
 			this->addPixel(pps[i]);
 		}

@@ -14,7 +14,8 @@ void Graph::draw() {
 	}
 }
 
-void Graph::setColor(COLOR color) {
+void Graph::setColor(Color color) {
+	/*
 	switch (color)
 	{
 	case BLACK:	glColor3f(0, 0, 0);
@@ -28,6 +29,8 @@ void Graph::setColor(COLOR color) {
 	default:	glColor3f(0, 0, 0);
 		break;
 	}
+	*/
+	glColor3f(color.Red, color.Green, color.Blue);
 }
 
 void Graph::graphCut(pixel c1, pixel c2) {
@@ -37,72 +40,26 @@ void Graph::graphCut(pixel c1, pixel c2) {
 	}
 }
 
-void Graph::graphTranslate(pixel p) {
-	if (SelectState == 1) {
-		vector<Shape*>::iterator itr = container.begin();
-		for (; itr != container.end(); itr++) {
-			cout << "judging\n";
-			if ((*itr)->isSelect(p)) {
-				cout << "succeed\n";
-				CurShape = *itr;
-				return;
-			}
-		}
-	}
-	else if (SelectState == 2) {
-		if (CurShape != NULL) {
-			CurShape->translate();
-		}
-	}
-}
-
-void Graph::graphRotate(pixel p) {
-	if (SelectState == 1) {
-		vector<Shape*>::iterator itr = container.begin();
-		for (; itr != container.end(); itr++) {
-			cout << "judging\n";
-			if ((*itr)->isSelect(p)) {
-				cout << "succeed\n";
-				CurShape = *itr;
-				return;
-			}
-		}
-	}
-	else if (SelectState == 2) {
-		if (CurShape != NULL) {
-			CurShape->rotate();
-		}
-	}
-}
-
-void Graph::graphScale(pixel p) {
-	if (SelectState == 1) {
-		vector<Shape*>::iterator itr = container.begin();
-		for (; itr != container.end(); itr++) {
-			cout << "judging\n";
-			if ((*itr)->isSelect(p)) {
-				cout << "succeed\n";
-				CurShape = *itr;
-				return;
-			}
-		}
-	}
-	else if (SelectState == 2) {
-		if (CurShape != NULL) {
-			CurShape->scale();
-		}
-	}
-}
-
-void Graph::graphFill(pixel p) {
+void Graph::graphSelect(pixel p) {
 	vector<Shape*>::iterator itr = container.begin();
 	for (; itr != container.end(); itr++) {
 		cout << "judging\n";
 		if ((*itr)->isSelect(p)) {
 			cout << "succeed\n";
-			(*itr)->setFill();
-			(*itr)->setColor(CurColor);
-			(*itr)->fill();
+			CurShape = *itr;
+
+			switch (CurState) {
+			case SCALE:
+				CurShape->setScale(); break;
+			case ROTATE:
+				CurShape->setRotate(); break;
+			case FILL:
+				CurShape->setFill();
+				CurShape->setColor(CurColor); 
+				break;
+			default:break;
+			}
+
 			return;
 		}
 	}

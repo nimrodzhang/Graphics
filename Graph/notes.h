@@ -26,4 +26,30 @@ Shape::myglVertex2i(int x, int y) {
 对所有在图形类中用到glVertex2i(int x, int y)的地方都替换成
 上述函数
 
+
+缩放：
+在shape中添加缩放的原始记录list
+缩放状态下，当一个图形被选中时，将points赋给缩放list，之后的缩放比例
+全部以缩放list为基础改变points
+
+直线：
+
+void Shape::scale() {
+pixel origin = { 0,0 };
+double lb = calDistance(Begin, origin);
+double le = calDistance(Current, origin);
+
+double s = le / lb;
+for (int i = 0; i < points.size(); i++) {
+points[i].x = scalelist[i].x*s;
+points[i].y = scalelist[i].y*s;
+}
+
+//！！！会出现与裁剪冲突的问题！！！
+}
+
+
+
+
+
 */

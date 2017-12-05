@@ -1,11 +1,12 @@
 #include "Shape.h"
 
 void Shape::addPixel(pixel p) {
-	points[index] = p;
-	index++;
+	points.push_back(p);
+	//index++;
 }
 //设定颜色
-void Shape::setColor(COLOR color) {
+void Shape::setColor(Color color) {
+	/*
 	switch (color)
 	{
 	case BLACK:	glColor3f(0, 0, 0);
@@ -18,7 +19,9 @@ void Shape::setColor(COLOR color) {
 		break;
 	default:	glColor3f(0, 0, 0);
 		break;
-	}
+	}*/
+	glColor3f(color.Red, color.Green, color.Blue);
+
 }
 //设置裁剪区域
 void Shape::setCut(pixel c1, pixel c2) {
@@ -30,7 +33,7 @@ void Shape::setCut(pixel c1, pixel c2) {
 }
 //平移
 void Shape::translate() {
-	for (int i = 0; i < index; i++) {
+	for (int i = 0; i < points.size(); i++) {
 		points[i].x -= (Begin.x - Current.x);
 		points[i].y -= (Begin.y - Current.y);
 	}
@@ -42,24 +45,27 @@ void Shape::translate() {
 	Begin = Current;
 }
 
-void Shape::scale() {
-	double lb = sqrt(Begin.x*Begin.x + Begin.y*Begin.y);
-	double le = sqrt(Current.x*Current.x + Current.y*Current.y);
-
-	double s = sqrt(le / lb);
-	for (int i = 0; i < index; i++) {
-		points[i].x = points[i].x*s;
-		points[i].y = points[i].y*s;
-	}
-	Begin = Current;
-
-	//！！！会出现与裁剪冲突的问题！！！
-}
-
 //填充
 void Shape::setFill() {
 	isFill = true;
 }
+
+void Shape::setScale() {
+	scalelist = points;
+	/*
+	for (int i = 0; i < index; i++) {
+		scalelist[i] = points[i];
+	}*/
+}
+
+void Shape::setRotate() {
+	rotatelist = points;
+	/*
+	for (int i = 0; i < index; i++) {
+		rotatelist[i] = points[i];
+	}*/
+}
+
 
 //裁剪区域的显示
 void Shape::myglVertex2i(int x, int y) {
@@ -73,5 +79,18 @@ void Shape::myglVertex2i(int x, int y) {
 			glVertex2i(x, y);	//输出
 		}
 		//否则不输出
+	}
+}
+
+
+void Shape::scale() {
+	pixel origin = { 0,0 };
+	double lb = calDistance(Begin, origin);
+	double le = calDistance(Current, origin);
+
+	double s = le / lb;
+	for (int i = 0; i < points.size(); i++) {
+		points[i].x = scalelist[i].x*s;
+		points[i].y = scalelist[i].y*s;
 	}
 }

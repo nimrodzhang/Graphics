@@ -64,53 +64,31 @@ void Line::fill() {
 }
 
 void Line::rotate() {
-	//cout << pow(points[0].x - points[1].x, 2) + pow(points[0].y - points[1].y, 2) << endl;
-	double tanA = (double)(WINY - Begin.y) / (double)Begin.x;
-	double tanB = (double)(WINY - Current.y) / (double)Current.x;
-	pixel up, down;
-	/*if (tanA > tanB) {
-		up = Begin;
-		down = Current;
+	double maxdis = 0;
+	pixel pmax = { 0,0 };
+	
+	for (int i = 0; i < rotatelist.size(); i++) {
+		double tempdis = calDistance(Begin, rotatelist[i]);
+		if ( tempdis > maxdis) {
+			maxdis = tempdis;
+			pmax = rotatelist[i];
+		}
 	}
-	else {
-		up = Current;
-		down = Begin;
-	}*/
-	down = Begin;
-	up = Current;
-	/*
-	double lup = sqrt(up.x*up.x + (WINY - up.y)*(WINY - up.y));
-	double sinup = (double)(WINY - up.y) / lup;
-	double cosup = (double)up.x / lup;
-	double ldown = sqrt(down.x*down.x + (WINY - down.y)*(WINY - down.y));
-	double sindown = (double)(WINY - down.y) / ldown;
-	double cosdown = (double)down.x / ldown;
 
-	double sin = sinup*cosdown - cosup*sindown;
-	double cos = cosup*cosdown + sinup*sindown;
-	cout << sin << "  " << cos << endl;
+	double lBegin = calDistance(Begin, pmax);
+	double sinBegin = (double)(Begin.y - pmax.y) / lBegin;
+	double cosBegin = (double)(Begin.x - pmax.x) / lBegin;
+	double lCurrent = calDistance(Current, pmax);
+	double sinCurrent = (double)(Current.y - pmax.y) / lCurrent;
+	double cosCurrent = (double)(Current.x - pmax.x) / lCurrent;
 
-	for (int i = 0; i < index; i++) {
-		points[i].x = points[i].x*cos - (points[i].y - WINY)*sin;
-		points[i].y = WINY + points[i].x*sin + (points[i].y - WINY)*cos;
+	double sin = sinCurrent*cosBegin - cosCurrent*sinBegin;
+	double cos = cosCurrent*cosBegin + sinCurrent*sinBegin;
+
+	for (int i = 0; i < points.size(); i++) {
+		points[i].x = pmax.x + (rotatelist[i].x - pmax.x)*cos - (rotatelist[i].y - pmax.y)*sin;
+		points[i].y = pmax.y + (rotatelist[i].x - pmax.x)*sin + (rotatelist[i].y - pmax.y)*cos;
 	}
-	*/
-	double lup = sqrt(up.x*up.x + (up.y)*(up.y));
-	double sinup = (double)(up.y) / lup;
-	double cosup = (double)up.x / lup;
-	double ldown = sqrt(down.x*down.x + (down.y)*(down.y));
-	double sindown = (double)(down.y) / ldown;
-	double cosdown = (double)down.x / ldown;
-
-	double sin = sinup*cosdown - cosup*sindown;
-	double cos = cosup*cosdown + sinup*sindown;
-	cout << sin << "  " << cos << endl;
-
-	for (int i = 0; i < index; i++) {
-		points[i].x = points[i].x*cos - (points[i].y)*sin;
-		points[i].y = points[i].x*sin + (points[i].y)*cos;
-	}
-	Begin = Current;
 }
 
 bool Line::isSelect(pixel p) {

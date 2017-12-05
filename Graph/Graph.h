@@ -11,17 +11,11 @@ public:
 	//画出容器中所有的图形
 	void draw();
 	//设定颜色
-	void setColor(COLOR color);
+	void setColor(Color color);
+	//选择
+	void graphSelect(pixel p);
 	//裁剪
 	void graphCut(pixel c1, pixel c2);
-	//平移
-	void graphTranslate(pixel p);
-	//旋转
-	void graphRotate(pixel p);
-	//缩放
-	void graphScale(pixel p);
-	//填充
-	void graphFill(pixel p);
 
 	void clear();
 };

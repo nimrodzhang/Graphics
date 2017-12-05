@@ -8,7 +8,7 @@ private:
 	double metaCompute(int start, int end, int p1, int p2, double t);
 
 public:
-	Bezier(pixel start, pixel end, pixel p1, pixel p2, COLOR color) {
+	Bezier(pixel start, pixel end, pixel p1, pixel p2, Color color) {
 		this->addPixel(start);		//points[0]	
 		this->addPixel(end);
 		this->addPixel(p1);
