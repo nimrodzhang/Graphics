@@ -2,8 +2,8 @@
 
 Color CurColor;
 STATE CurState = FREE;
+COLORSTATE ColorState = SETBLACK;
 TYPE CurType = BLANK;
-//int SelectState = 0;
 struct pixel Begin, Current;
 struct pixel BezierPoints[4];
 int BezierCnt = 0;
@@ -13,6 +13,7 @@ vector<pixel> PolygonPoints;
 void reinit() {
 	CurColor = Color();
 	CurState = FREE;
+	ColorState = SETBLACK;
 	CurType = BLANK;
 	BezierCnt = 0;
 	PolygonPoints.clear();
@@ -240,8 +241,19 @@ void mouseFunc(int button, int state, int x, int y) {
 			}
 		}
 	}
-	else if (CurState == SETCOLOR) {
-
+	
+	
+	if (ColorState == SETCOLOR) {
+		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+			pixel p = { x,WINY - y };
+			pixel mid = { WINX / 2,WINY / 2 };
+			if (calDistance(p, mid) <= COLOR_R) {
+				CurColor = calColor(p, mid);
+				ColorState = SETNONE;
+				Begin = Current = { 0,0 };
+				displayFunc();
+			}
+		}
 	}
 }
 

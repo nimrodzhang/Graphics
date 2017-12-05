@@ -11,8 +11,9 @@ void Polygon::connectLines(vector<pixel> points, Color color) {
 
 void Polygon::draw() {
 	connectLines(points, lineColor);
-	if(isFill)
+	if (isFill) {
 		fill();
+	}
 }
 
 
@@ -21,6 +22,9 @@ bool compareX(const Node& a, const Node& b) {
 }
 
 void Polygon::fill() {
+	setColor(fillColor);
+
+
 	list<Node> OrderedEgdeTable[700];
 
 	for (int i = 0; i < points.size()-1; i++) {

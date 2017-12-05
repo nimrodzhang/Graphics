@@ -48,6 +48,7 @@ void Shape::translate() {
 //Моід
 void Shape::setFill() {
 	isFill = true;
+	fillColor = CurColor;
 }
 
 void Shape::setScale() {

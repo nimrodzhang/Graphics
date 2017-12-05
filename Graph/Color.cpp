@@ -2,7 +2,7 @@
 
 void showColor() {
 	pixel mid = { WINX / 2,WINY / 2 };
-	double r = 100.0;
+	double r = COLOR_R;
 
 	glBegin(GL_POINTS);
 	for (int i = mid.x - r; i <= mid.x + r; i++) {

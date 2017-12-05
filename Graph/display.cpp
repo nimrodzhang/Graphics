@@ -104,7 +104,8 @@ void displayFunc() {
 			//CurShape->展示显示框;
 		}
 	}
-	else if (CurState == SETCOLOR) {
+	
+	if (ColorState == SETCOLOR) {
 		showColor();
 	}
 	glFlush();
@@ -147,8 +148,12 @@ void setValue(int value) {
 		break;
 		*/
 	case SETCOLOR:
-		CurState = SETCOLOR;
-		//displayFunc();
+		ColorState = SETCOLOR;
+		displayFunc();
+		break;
+	case SETBLACK:
+		ColorState = SETBLACK;
+		CurColor = Color(0, 0, 0);
 		break;
 
 	case EDIT:
@@ -179,7 +184,7 @@ void setValue(int value) {
 		break;
 	default:break;
 	}
-	displayFunc();
+	//displayFunc();
 }
 
 void createMenu() {
@@ -190,13 +195,11 @@ void createMenu() {
 	glutAddMenuEntry("Bezier曲线", BEZIER);
 	glutAddMenuEntry("多边形", POLYGON);
 
-	/*
+	
 	int ColorMenu = glutCreateMenu(setValue);
-	glutAddMenuEntry("黑色", BLACK);
-	glutAddMenuEntry("红色", RED);
-	glutAddMenuEntry("绿色", GREEN);
-	glutAddMenuEntry("蓝色", BLUE);
-	*/
+	glutAddMenuEntry("黑色", SETBLACK);
+	glutAddMenuEntry("调色盘", SETCOLOR);
+	 
 	int EditMenu = glutCreateMenu(setValue);
 	glutAddMenuEntry("平移", TRANSLATE);
 	glutAddMenuEntry("旋转", ROTATE);
@@ -205,8 +208,7 @@ void createMenu() {
 
 	int MainMenu = glutCreateMenu(setValue);
 	glutAddSubMenu("选择图形", ShapeMenu);
-	//glutAddSubMenu("选择颜色", ColorMenu);
-	glutAddMenuEntry("选择颜色", SETCOLOR);
+	glutAddSubMenu("选择颜色", ColorMenu);
 	glutAddSubMenu("图形编辑", EditMenu);
 	glutAddMenuEntry("编辑", EDIT);
 	glutAddMenuEntry("裁剪", CUT);

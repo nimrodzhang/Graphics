@@ -41,8 +41,9 @@ void Ellipse::drawSymmetrically(pixel p, int x, int y) {
 void Ellipse::draw() {
 	setColor(lineColor);
 	midPoint(points[0], abs(points[1].x - points[0].x), abs(points[1].y - points[0].y));
-	if (isFill)
+	if (isFill) {
 		fill();
+	}
 }
 
 void Ellipse::fillSymmetrically(pixel p, int x, int y) {
@@ -57,6 +58,8 @@ void Ellipse::fillSymmetrically(pixel p, int x, int y) {
 }
 
 void Ellipse::fill() {
+	setColor(fillColor);
+
 	pixel p = points[0];
 	int a = abs(points[1].x - points[0].x);
 	int b = abs(points[1].y - points[0].y);

@@ -8,19 +8,19 @@ using namespace std;
 #define WINX 600
 #define WINY 600
 #define PI 3.1415926
+#define COLOR_R 200.0
 
 struct pixel {
 	int x;
 	int y;
 };
 
-/*
-enum COLOR {
-	BLACK = 101,
-	RED,
-	BLUE,
-	GREEN,
-};*/
+
+enum COLORSTATE {
+	SETNONE = 101,
+	SETCOLOR,
+	SETBLACK,
+};
 
 enum TYPE {
 	BLANK = 81,
@@ -35,7 +35,6 @@ enum TYPE {
 enum STATE {
 	FREE = 61,
 	DRAW,
-	SETCOLOR,
 	EDIT,
 	CUT,
 	TRANSLATE,
@@ -68,6 +67,7 @@ public:
 
 extern Color CurColor;
 extern STATE CurState;
+extern COLORSTATE ColorState;
 extern TYPE CurType;
 extern struct pixel Begin, Current;
 extern struct pixel BezierPoints[4];

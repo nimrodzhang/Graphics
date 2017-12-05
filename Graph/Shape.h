@@ -6,6 +6,7 @@ protected:
 	vector<pixel> points;	//坐标集
 	//int index = 0;		//坐标集尾部指示
 	Color lineColor;	//图形线颜色
+	Color fillColor;
 	bool isCutted = false;	//是否被裁剪
 	//裁剪窗口
 	pixel cut1 = { 0, 0 }, cut2 = { WINX,WINY };

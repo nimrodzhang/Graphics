@@ -33,8 +33,10 @@ void Circle::draw() {
 	setColor(lineColor);
 	int r = (int)calDistance(points[0], points[1]);
 	midPoint(points[0], r);
-	if(isFill)
+	if (isFill) {
 		fill();
+	}
+		
 }
 
 void Circle::fillSymmetrically(pixel p, int x, int y) {
@@ -55,6 +57,8 @@ void Circle::fillSymmetrically(pixel p, int x, int y) {
 }
 
 void Circle::fill() {
+	setColor(fillColor);
+
 	pixel p = points[0];
 	int r = (int)calDistance(points[0], points[1]);
 	
