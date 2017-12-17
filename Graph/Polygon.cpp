@@ -23,9 +23,9 @@ bool compareX(const Node& a, const Node& b) {
 
 void Polygon::fill() {
 	setColor(fillColor);
+	cout << "filll polygon\n";
 
-
-	list<Node> OrderedEgdeTable[700];
+	list<Node> OrderedEgdeTable[WINY];
 
 	for (int i = 0; i < points.size()-1; i++) {
 		pixel up, down;
@@ -44,7 +44,7 @@ void Polygon::fill() {
 		OrderedEgdeTable[down.y].push_back(temp);
 	}
 	
-	for (int i = 1; i < 700; i++) {
+	for (int i = 1; i < WINY; i++) {
 		//ป๎ปฏ
 		OrderedEgdeTable[i].insert(OrderedEgdeTable[i].end(), OrderedEgdeTable[i - 1].begin(), OrderedEgdeTable[i - 1].end());
 		OrderedEgdeTable[i - 1].clear();
@@ -114,11 +114,37 @@ void Polygon::rotate() {
 }
 
 bool Polygon::isSelect(pixel p) {
+	cout << "enter polygon isselected\n";
+
 	for (int i = 0; i < points.size()-1; i++) {
 		Line line(points[i], points[i + 1], lineColor);
 		line.setCut(cut1, cut2);
 		if (line.isSelect(p))
 			return true;
+	}
+	return false;
+}
+
+void Polygon::setEdit() {
+	editlist = points;
+}
+
+void Polygon::showEdit() {
+	for (int i = 0; i < points.size()-1; i++) {
+		//cout << "dlc\n";
+		drawLittleCircle(points[i]);
+	}
+}
+
+bool Polygon::isEdit(pixel p) {
+	for (int i = 0; i < points.size(); i++) {
+		if (calDistance(p, editlist[i]) < 10) {
+			cout << "choose point\n";
+			points[i] = Current;
+			if (i == 0)
+				points[points.size() - 1] = Current;
+			return true;
+		}
 	}
 	return false;
 }

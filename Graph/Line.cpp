@@ -108,3 +108,25 @@ bool Line::isSelect(pixel p) {
 	}
 	return false;
 }
+
+void Line::setEdit() {
+	editlist = points;
+}
+
+void Line::showEdit() {
+	for (int i = 0; i < points.size(); i++) {
+		//cout << "dlc\n";
+		drawLittleCircle(points[i]);
+	}
+}
+
+bool Line::isEdit(pixel p) {
+	for (int i = 0; i < points.size(); i++) {
+		if (calDistance(p, editlist[i]) < 10) {
+			cout << "choose point\n";
+			points[i] = Current;
+			return true;
+		}
+	}
+	return false;
+}

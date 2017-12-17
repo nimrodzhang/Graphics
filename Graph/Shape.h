@@ -13,14 +13,16 @@ protected:
 	bool isFill = false;	//是否被填充
 	vector<pixel> scalelist;	//缩放记录
 	vector<pixel> rotatelist;	//旋转记录
+	vector<pixel> editlist;		//编辑记录
 
 public:
 	virtual void draw(){}		//绘图
 	virtual void fill(){}		//填充
 	virtual void rotate(){}		//旋转
-	virtual bool isSelect(pixel p){	//选中
-		return false;
-	}
+	virtual bool isSelect(pixel p){	return false; }	//选中
+	virtual void showEdit(){}	//编辑框
+	virtual bool isEdit(pixel p) { return false; }	//编辑
+	virtual void setEdit() {}		//设置编辑记录
 	void scale();			//缩放
 
 
@@ -31,6 +33,11 @@ public:
 	
 	void setScale();		//设置缩放记录
 	void setRotate();		//设置旋转记录
+	
 	void setFill();			//设置填充
 	void myglVertex2i(int x, int y);	//裁剪区域的显示
 };
+
+
+void drawLittleCircle(pixel p);
+void drawGreyLine(pixel p1, pixel p2);

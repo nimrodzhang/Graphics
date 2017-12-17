@@ -5,8 +5,8 @@
 #include <gl\glut.h>
 using namespace std;
 
-#define WINX 600
-#define WINY 600
+#define WINX 1600
+#define WINY 1600
 #define PI 3.1415926
 #define COLOR_R 200.0
 

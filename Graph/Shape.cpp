@@ -1,4 +1,6 @@
 #include "Shape.h"
+#include "Circle.h"
+#include "Line.h"
 
 void Shape::addPixel(pixel p) {
 	points.push_back(p);
@@ -67,7 +69,6 @@ void Shape::setRotate() {
 	}*/
 }
 
-
 //裁剪区域的显示
 void Shape::myglVertex2i(int x, int y) {
 	if (!this->isCutted) {	//没被裁剪过
@@ -94,4 +95,16 @@ void Shape::scale() {
 		points[i].x = scalelist[i].x*s;
 		points[i].y = scalelist[i].y*s;
 	}
+}
+
+void drawLittleCircle(pixel p) {
+	pixel r = { p.x + 5,p.y };
+	Circle a(p, r, Color(0, 0, 0));
+	a.draw();
+
+}
+
+void drawGreyLine(pixel p1, pixel p2) {
+	Line a(p1, p2, Color(0.5, 0.5, 0.5));
+	a.draw();
 }

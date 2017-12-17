@@ -211,6 +211,10 @@ void mouseFunc(int button, int state, int x, int y) {
 			Graphs.graphSelect(Begin);
 			displayFunc();
 		}
+		else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
+			//Current = { x,WINY - y };
+			CurShape = NULL;
+		}
 	}
 	else if (CurState == ROTATE) {
 		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
@@ -237,9 +241,20 @@ void mouseFunc(int button, int state, int x, int y) {
 			Begin = { x,WINY - y };
 			if (CurShape == NULL) {
 				Graphs.graphSelect(Begin);
-				
+				displayFunc();
+			}
+			else {
+				bool is = CurShape->isEdit(Begin);
+					if(!is)
+						CurShape = NULL;
 			}
 		}
+		else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
+			if (CurShape != NULL) {
+				CurShape->setEdit();
+			}
+		}
+
 	}
 	
 	

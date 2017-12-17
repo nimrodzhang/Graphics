@@ -117,3 +117,35 @@ bool Ellipse::isSelect(pixel p) {
 	}
 	return false;
 }
+
+void Ellipse::setEdit() {
+	editlist = points;
+}
+
+void Ellipse::showEdit() {
+	int a = abs(points[0].x - points[1].x)+1;
+	int b = abs(points[0].y - points[1].y)+1;
+	pixel p1 = { points[0].x + a,points[0].y + b };
+	pixel p2 = { points[0].x + a,points[0].y - b };
+	pixel p3 = { points[0].x - a,points[0].y + b };
+	pixel p4 = { points[0].x - a,points[0].y - b };
+	drawLittleCircle(p1);
+	drawLittleCircle(p2);
+	drawLittleCircle(p3);
+	drawLittleCircle(p4);
+	drawGreyLine(p1, p2);
+	drawGreyLine(p1, p3);
+	drawGreyLine(p4, p2);
+	drawGreyLine(p4, p3);
+}
+
+bool Ellipse::isEdit(pixel p) {
+	for (int i = 0; i < points.size(); i++) {
+		if (calDistance(p, editlist[i]) < 10) {
+			cout << "choose point\n";
+			points[i] = Current;
+			return true;
+		}
+	}
+	return false;
+}

@@ -57,6 +57,8 @@ void Graph::graphSelect(pixel p) {
 				CurShape->setFill();
 				CurShape->setColor(CurColor); 
 				break;
+			case EDIT:
+				CurShape->setEdit(); break;
 			default:break;
 			}
 

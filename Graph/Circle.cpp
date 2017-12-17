@@ -90,3 +90,45 @@ bool Circle::isSelect(pixel p) {
 	}
 	return false;
 }
+
+void Circle::setEdit() {
+	editlist.clear();
+	int r = calDistance(points[0], points[1])+1;
+	pixel p1 = { points[0].x + r, points[0].y + r };
+	pixel p2 = { points[0].x + r, points[0].y - r };
+	pixel p3 = { points[0].x - r, points[0].y + r };
+	pixel p4 = { points[0].x - r, points[0].y - r };
+	editlist.push_back(p1);
+	editlist.push_back(p2);
+	editlist.push_back(p3);
+	editlist.push_back(p4);
+
+}
+
+void Circle::showEdit() {
+	int r = calDistance(points[0], points[1]);
+	pixel p1 = { points[0].x + r, points[0].y + r };
+	pixel p2 = { points[0].x + r, points[0].y - r };
+	pixel p3 = { points[0].x - r, points[0].y + r };
+	pixel p4 = { points[0].x - r, points[0].y - r };
+	drawLittleCircle(p1);
+	drawLittleCircle(p2);
+	drawLittleCircle(p3);
+	drawLittleCircle(p4);
+	drawGreyLine(p1, p2);
+	drawGreyLine(p1, p3);
+	drawGreyLine(p4, p2);
+	drawGreyLine(p4, p3);
+
+}
+
+bool Circle::isEdit(pixel p) {
+	for (int i = 0; i < editlist.size(); i++) {
+		if (calDistance(p, editlist[i]) < 10) {
+			cout << "choose point\n";
+			points[1] = { Current.x, points[0].y };
+			return true;
+		}
+	}
+	return false;
+}

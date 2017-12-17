@@ -102,6 +102,8 @@ void displayFunc() {
 	else if (CurState == EDIT) {
 		if (CurShape != NULL) {
 			//CurShape->Õ¹Ê¾ÏÔÊ¾¿ò;
+			CurShape->showEdit();
+			CurShape->isEdit(Begin);
 		}
 	}
 	

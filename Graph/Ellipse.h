@@ -17,4 +17,7 @@ public:
 	void fill();
 	void rotate();
 	bool isSelect(pixel p);
+	void setEdit();
+	void showEdit();
+	bool isEdit(pixel p);
 };
