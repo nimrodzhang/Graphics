@@ -4,6 +4,7 @@
 #include "Ellipse.h"
 #include "Bezier.h"
 #include "Polygon.h"
+#include "3Dshape.h"
 #include "display.h"
 #include "Graph.h"
 

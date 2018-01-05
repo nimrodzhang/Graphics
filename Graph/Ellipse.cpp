@@ -101,8 +101,13 @@ bool Ellipse::isSelect(pixel p) {
 		double a = abs(points[0].x - points[1].x);
 		double b = abs(points[0].y - points[1].y);
 		if (p.x == points[0].x) {
+			/*
 			if ((p.y > points[0].y + b - 10 && p.y < points[0].y + b + 10) 
 				|| (p.y > points[0].y - b - 10 && p.y < points[0].y - b + 10))
+				return true;
+			*/
+			if (p.y < points[0].y + b + 5
+				|| p.y > points[0].y - b - 5)
 				return true;
 		}
 		else {
@@ -111,7 +116,7 @@ bool Ellipse::isSelect(pixel p) {
 			double ys = k*k*xs;
 			double r = sqrt(xs + ys);
 			double dis = calDistance(p, points[0]);
-			if (fabs(dis - r) < 10.0)
+			if (dis < r + 5.0)
 				return true;
 		}
 	}

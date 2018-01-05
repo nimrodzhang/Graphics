@@ -3,4 +3,4 @@
 
 
 void showColor();
-Color calColor(pixel p, pixel mid);
+Color calColor(pixel p, pixel mid, double r);

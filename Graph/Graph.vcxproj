@@ -140,6 +140,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="3Dshape.h" />
     <ClInclude Include="Bezier.h" />
     <ClInclude Include="Circle.h" />
     <ClInclude Include="Color.h" />
@@ -154,6 +155,7 @@
     <ClInclude Include="Line.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="3Dshape.cpp" />
     <ClCompile Include="Bezier.cpp" />
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="Color.cpp" />

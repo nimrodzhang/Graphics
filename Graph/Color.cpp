@@ -9,7 +9,7 @@ void showColor() {
 		for (int j = mid.y - r; j <= mid.y + r; j++) {
 			pixel temp = { i,j };
 			if (calDistance(temp, mid) <= r) {
-				Color c = calColor(temp, mid);
+				Color c = calColor(temp, mid, r);
 				glColor3f(c.Red, c.Green, c.Blue);
 				glVertex2i(i, j);
 			}
@@ -19,11 +19,17 @@ void showColor() {
 
 }
 
-Color calColor(pixel p, pixel mid) {
+Color calColor(pixel p, pixel mid, double r) {
 	double dis = calDistance(p, mid);
 	double cos = (double)(p.x - mid.x) / dis;
 	double arc = acos(cos);
 	double angle = (arc / PI) / 2.0;
+
+	double s = dis / r;
+	double l = 0.5;
+	double qq = l + s - (l*s);
+	double pp = 2 * l - qq;
+
 
 	if (p.y - mid.y < 0)
 		angle = 1.0 - angle;
@@ -40,16 +46,16 @@ Color calColor(pixel p, pixel mid) {
 	}
 	for (int j = 0; j < 3; j++) {
 		if (tk[j] < (1.0 / 6.0)) {
-			ck[j] = 6.0*tk[j];
+			ck[j] = pp + ((qq - pp)*6.0*tk[j]);
 		}
 		else if (tk[j] < 0.5) {
-			ck[j] = 1.0;
+			ck[j] = qq;
 		}
 		else if (tk[j] < (2.0 / 3.0)) {
-			ck[j] = 4.0 - 6.0*tk[j];
+			ck[j] = pp + ((qq - pp)*(4.0 - 6.0*tk[j]));
 		}
 		else {
-			ck[j] = 0.0;
+			ck[j] = pp;
 		}
 	}
 	Color rst(ck[0], ck[1], ck[2]);

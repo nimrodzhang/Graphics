@@ -71,6 +71,11 @@ void displayFunc() {
 			}
 			break; 
 		}
+		case _3DSHAPE: {
+			_3Dshape shape(Begin, Current, CurColor);
+			shape.draw();
+			break;
+		}
 
 		default:
 			break;
@@ -135,6 +140,10 @@ void setValue(int value) {
 		CurState = DRAW;
 		CurType = POLYGON;
 		break;
+	case _3DSHAPE:
+		CurState = DRAW;
+		CurType = _3DSHAPE;
+		break;
 /*
 	case BLACK:
 		CurColor = BLACK;
@@ -184,6 +193,9 @@ void setValue(int value) {
 		Graphs.clear();
 		reinit();
 		break;
+	case SAVE:
+		grab();
+		break;
 	default:break;
 	}
 	//displayFunc();
@@ -196,6 +208,7 @@ void createMenu() {
 	glutAddMenuEntry("椭圆", ELLIPSE);
 	glutAddMenuEntry("Bezier曲线", BEZIER);
 	glutAddMenuEntry("多边形", POLYGON);
+	glutAddMenuEntry("3D图形", _3DSHAPE);
 
 	
 	int ColorMenu = glutCreateMenu(setValue);
@@ -203,6 +216,7 @@ void createMenu() {
 	glutAddMenuEntry("调色盘", SETCOLOR);
 	 
 	int EditMenu = glutCreateMenu(setValue);
+	glutAddMenuEntry("裁剪", CUT);
 	glutAddMenuEntry("平移", TRANSLATE);
 	glutAddMenuEntry("旋转", ROTATE);
 	glutAddMenuEntry("缩放", SCALE);
@@ -211,11 +225,65 @@ void createMenu() {
 	int MainMenu = glutCreateMenu(setValue);
 	glutAddSubMenu("选择图形", ShapeMenu);
 	glutAddSubMenu("选择颜色", ColorMenu);
-	glutAddSubMenu("图形编辑", EditMenu);
-	glutAddMenuEntry("编辑", EDIT);
-	glutAddMenuEntry("裁剪", CUT);
+	glutAddMenuEntry("图形编辑", EDIT);
+	glutAddSubMenu("图形变换", EditMenu);
 	glutAddMenuEntry("新建", NEW);
+	glutAddMenuEntry("保存", SAVE);
 
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
+}
+
+
+
+void grab()
+{
+	FILE* pWritingFile;  //指向要保存截图的bmp文件  
+	GLubyte* pPixelData;    //指向新的空的内存，用于保存截图bmp文件数据  
+	GLint i, j;
+	GLint PixelDataLength;   //BMP文件数据总长度  
+	//BMP头部信息
+	GLubyte BMPHeader[] = { 0x42,0x4d,0x02,0xd8,0x01,0x00,0x00,0x00,
+							0x00,0x00,0x36,0x00,0x00,0x00,0x28,0x00,
+							0x00,0x00,0xdc,0x00,0x00,0x00,0xb7,0x00,
+							0x00,0x00,0x01,0x00,0x18,0x00,0x00,0x00,
+							0x00,0x00,0xcc,0xd7,0x01,0x00,0x00,0x00,
+							0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+							0x00,0x00,0x00,0x00,0x00,0x00 };
+
+					// 计算像素数据的实际长度  
+	i = WINX * 3;   // 得到每一行的像素数据长度  
+	while (i % 4 != 0)      // 补充数据，直到i是的倍数  
+		++i;
+	PixelDataLength = i * WINY;  //补齐后的总位数  
+
+	// 分配内存和打开文件  
+	pPixelData = (GLubyte*)malloc(PixelDataLength);
+	if (pPixelData == 0)
+		exit(0);
+
+	pWritingFile = fopen("grab.bmp", "wb"); //只写形式打开  
+	if (pWritingFile == 0)
+		exit(0);
+
+	//把读入的bmp文件的文件头和信息头数据复制，并修改宽高数据  
+	fwrite(BMPHeader, sizeof(BMPHeader), 1, pWritingFile);
+	fseek(pWritingFile, 0x0012, SEEK_SET); //移动到0X0012处，指向图像宽度所在内存  
+	i = WINX;
+	j = WINY;
+	fwrite(&i, sizeof(i), 1, pWritingFile);
+	fwrite(&j, sizeof(j), 1, pWritingFile);
+
+	// 读取当前画板上图像的像素数据  
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);  //设置4位对齐方式  
+	glReadPixels(0, 0, WINX, WINY, GL_BGR_EXT, GL_UNSIGNED_BYTE, pPixelData);
+
+	// 写入像素数据  
+	fseek(pWritingFile, 0, SEEK_END);
+	//把完整的BMP文件数据写入pWritingFile  
+	fwrite(pPixelData, PixelDataLength, 1, pWritingFile);
+
+	// 释放内存和关闭文件  
+	fclose(pWritingFile);
+	free(pPixelData);
 }

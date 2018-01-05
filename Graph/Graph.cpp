@@ -15,28 +15,21 @@ void Graph::draw() {
 }
 
 void Graph::setColor(Color color) {
-	/*
-	switch (color)
-	{
-	case BLACK:	glColor3f(0, 0, 0);
-		break;
-	case RED:	glColor3f(1.0, 0, 0);
-		break;
-	case BLUE:	glColor3f(0, 0, 1.0);
-		break;
-	case GREEN:	glColor3f(0, 1.0, 0);
-		break;
-	default:	glColor3f(0, 0, 0);
-		break;
-	}
-	*/
 	glColor3f(color.Red, color.Green, color.Blue);
 }
 
 void Graph::graphCut(pixel c1, pixel c2) {
 	vector<Shape*>::iterator itr = container.begin();
-	for (; itr != container.end(); itr++) {
-		(*itr)->setCut(c1, c2);
+	for (; itr != container.end(); ) {
+		//(*itr)->setCut(c1, c2);
+		bool is = (*itr)->cut(c1, c2);
+		if (!is) {
+			//vector<Shape*>::iterator tempitr = itr;
+			itr = container.erase(itr);
+		}
+		else {
+			itr++;
+		}
 	}
 }
 

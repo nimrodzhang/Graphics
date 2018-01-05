@@ -51,6 +51,9 @@
     <ClInclude Include="Color.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="3Dshape.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Line.cpp">
@@ -84,6 +87,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Color.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="3Dshape.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -25,14 +25,8 @@ void Shape::setColor(Color color) {
 	glColor3f(color.Red, color.Green, color.Blue);
 
 }
-//ÉèÖÃ²Ã¼ôÇøÓò
-void Shape::setCut(pixel c1, pixel c2) {
-	this->isCutted = true;
-	cut1.x = max(min(c1.x, c2.x), cut1.x);
-	cut1.y = max(min(c1.y, c2.y), cut1.y);
-	cut2.x = min(max(c1.x, c2.x), cut2.x);
-	cut2.y = min(max(c1.y, c2.y), cut2.y);
-}
+
+
 //Æ½ÒÆ
 void Shape::translate() {
 	for (int i = 0; i < points.size(); i++) {

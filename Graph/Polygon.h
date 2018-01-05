@@ -1,6 +1,7 @@
 #pragma once
 #include "Shape.h"
 #include "Line.h"
+#include "Graph.h"
 
 class Polygon : public Shape {
 private:
@@ -21,10 +22,19 @@ public:
 	void setEdit();
 	void showEdit();
 	bool isEdit(pixel p);
+	bool cut(pixel c1, pixel c2);
 };
 
 struct Node {
 	int Ymax;
 	double X;
 	double m;
+};
+
+struct CutNode {
+	int x;
+	int y;
+	int direction;		//1->in,-1->out
+	bool isUsed;
+	bool crossPoint;   //是否是交点
 };

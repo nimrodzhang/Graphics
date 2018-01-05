@@ -178,6 +178,11 @@ void mouseFunc(int button, int state, int x, int y) {
 				}
 				break; 
 			}
+			case _3DSHAPE: {
+				_3Dshape *shape = new _3Dshape(Begin, Current, CurColor);
+				Graphs.addShape(shape);
+				break;
+			}
 
 			default:
 				break;
@@ -263,7 +268,7 @@ void mouseFunc(int button, int state, int x, int y) {
 			pixel p = { x,WINY - y };
 			pixel mid = { WINX / 2,WINY / 2 };
 			if (calDistance(p, mid) <= COLOR_R) {
-				CurColor = calColor(p, mid);
+				CurColor = calColor(p, mid, COLOR_R);
 				ColorState = SETNONE;
 				Begin = Current = { 0,0 };
 				displayFunc();

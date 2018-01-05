@@ -18,4 +18,5 @@ public:
 	void setEdit();
 	void showEdit();
 	bool isEdit(pixel p);
+	bool cut(pixel c1, pixel c2);
 };

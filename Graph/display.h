@@ -4,3 +4,4 @@
 
 void displayFunc();
 void createMenu();
+void grab();

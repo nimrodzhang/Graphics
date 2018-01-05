@@ -130,3 +130,67 @@ bool Line::isEdit(pixel p) {
 	}
 	return false;
 }
+
+bool ClipT(double p, double q, double *u1, double *u2) {
+	double r;
+	bool flag = true;
+
+	if (p < 0.0) {
+		r = q / p;
+		if (r > *u2) {
+			flag = false;
+		}
+		else if (r > *u1) {
+			*u1 = r;
+			flag = true;
+		}
+	}
+	else if (p > 0.0) {
+		r = q / p;
+		if (r < *u1) {
+			flag = false;
+		}
+		else if (r < *u2) {
+			*u2 = r;
+			flag = true;
+		}
+	}
+	else if (q < 0.0) {
+		flag = false;
+	}
+	return flag;
+}
+
+//左上右下，左下右上
+
+bool Line::cut(pixel c1, pixel c2) {
+	int xmin = min(c1.x, c2.x);
+	int ymin = min(c1.y, c2.y);
+	int xmax = max(c1.x, c2.x);
+	int ymax = max(c1.y, c2.y);
+	
+	double dx = double(points[1].x - points[0].x);
+	double dy = double(points[1].y - points[0].y);
+	double u1 = 0.0;
+	double u2 = 1.0;
+	
+	if (ClipT(-dx, points[0].x - xmin, &u1, &u2)) {
+		if (ClipT(dx, xmax - points[0].x, &u1, &u2)) {
+			if (ClipT(-dy, points[0].y - ymin, &u1, &u2)) {
+				if (ClipT(dy, ymax - points[0].y, &u1, &u2)) {
+					if (u2 < 1.0) {
+						points[1].x = points[0].x + u2*dx;
+						points[1].y = points[0].y + u2*dy;
+					}
+					if (u1 > 0.0) {
+						points[0].x = points[0].x + u1*dx;
+						points[0].y = points[0].y + u1*dy;
+					}
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+
+}

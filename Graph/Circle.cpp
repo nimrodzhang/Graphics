@@ -85,7 +85,7 @@ bool Circle::isSelect(pixel p) {
 	if (cut1.x <= p.x && p.x <= cut2.x && cut1.y <= p.y && p.y <= cut2.y) {
 		double dis = calDistance(p, points[0]);
 		double r = calDistance(points[0], points[1]);
-		if (fabs(dis - r) < 10.0)
+		if (dis < (r+5.0))
 			return true;
 	}
 	return false;
